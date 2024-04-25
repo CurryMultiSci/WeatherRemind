@@ -2,11 +2,8 @@ import requests
 import json
 import os
 
-
-# 从测试号信息获取
 appID = os.environ.get("APP_ID")
 appSecret = os.environ.get("APP_SECRET")
-# 收信人ID即 用户列表中的微信号
 openId = os.environ.get("OPEN_ID")
 
 def get_weather():
@@ -62,15 +59,11 @@ def send_weather_text(access_token, weather,tomo_weather):
 
 
 def weather_report():
-    # 1.获取access_token
     access_token = get_access_token()
-    # 2. 获取天气
     weather = get_weather()
     tomo_weather=get_tomorrow_weather()
     print(f"天气信息： {weather,tomo_weather}")
-    # 3. 发送消息
     send_weather_text(access_token, weather,tomo_weather)
-
 
 if __name__ == '__main__':
     weather_report()
