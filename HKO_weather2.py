@@ -22,7 +22,6 @@ def get_tomorrow_weather():
     url="https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc"
     resp = requests.get(url)
     data=resp.json()
-    # hum=data["forecastMaxrh"]
     general=data["generalSituation"]
     weather=data["weatherForecast"][0]["forecastWeather"]
     wind=data["weatherForecast"][0]["forecastWind"]
@@ -31,6 +30,17 @@ def get_tomorrow_weather():
     humMax=data["weatherForecast"][0]["forecastMaxrh"]["value"]
     humMin=data["weatherForecast"][0]["forecastMinrh"]["value"]
     return general,weather,wind,tempMax,tempMin,humMax,humMin
+
+def get_weather_warn():
+    url="https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=warningInfo&lang=tc"
+    resp = requests.get(url)
+    data=resp.json()["details"]
+    len_data=len(data)
+    warn=""
+    for i in range(0,len_data):
+        warn+=data[i]["updateTime"]+":"+str(data[i]["contents"])+"\r\n"
+    warn="無" if warn=="" else warn
+    return warn
 
 
 def get_access_token():
@@ -42,7 +52,7 @@ def get_access_token():
     access_token = response.get('access_token')
     return access_token
 
-def send_weather_text(access_token, weather,tomo_weather):
+def send_weather_text(access_token, weather,tomo_weather,warn):
     import datetime
     today = datetime.date.today()
     today_str = today.strftime("%Y年%m月%d日")
@@ -50,7 +60,7 @@ def send_weather_text(access_token, weather,tomo_weather):
     body = {
         "touser": openId.strip(),
         "text":{           
-            "content":"本港地區天氣預報(數據源自：香港天文臺)\r\n"+"天氣概況："+weather[0]+"\r\n"+weather[2]+"："+weather[3]+"\r\n明日天氣："+tomo_weather[1]+tomo_weather[2]+"溫度"+str(tomo_weather[4])+"°C ~ "+str(tomo_weather[3])+"°C。"+"相對濕度"+str(tomo_weather[6])+"% ~ "+str(tomo_weather[5])+"%。"+"\r\n未來天氣："+tomo_weather[0]+"\r\n熱帶氣旋："+weather[1]+"\r\n更新時間："+weather[4]
+            "content":"本港地區天氣預報(數據源自：香港天文臺)\r\n"+"特別天氣提示："+warn+"\r\n"+weather[2]+"："+weather[3]+"\r\n明日天氣："+tomo_weather[1]+tomo_weather[2]+"溫度"+str(tomo_weather[4])+"°C ~ "+str(tomo_weather[3])+"°C。"+"相對濕度"+str(tomo_weather[6])+"% ~ "+str(tomo_weather[5])+"%。"+"\r\n未來天氣："+tomo_weather[0]+"\r\n熱帶氣旋："+weather[1]+"\r\n更新時間："+weather[4]
         },     
         "msgtype":"text"
         }
@@ -62,8 +72,9 @@ def weather_report():
     access_token = get_access_token()
     weather = get_weather()
     tomo_weather=get_tomorrow_weather()
-    print(f"天气信息： {weather,tomo_weather}")
-    send_weather_text(access_token, weather,tomo_weather)
+    warn=get_weather_warn()
+    print(f"天气信息： {weather,tomo_weather,warn}")
+    send_weather_text(access_token, weather,tomo_weather,warn)
 
 if __name__ == '__main__':
     weather_report()
