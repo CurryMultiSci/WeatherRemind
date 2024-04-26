@@ -5,7 +5,7 @@ name: 香港天文台天气预报
 
 on:
   schedule:
-    - cron : '00 1,4,10,13 * * *'
+    - cron : '00 01,04,10,13 * * *'
   workflow_dispatch:
 
 permissions:
@@ -29,7 +29,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Run weather Report
       run: |
-        python HKO_weather2.py
+        python HKO_weather.py
       env:
         APP_ID: ${{ secrets.APP_ID }}
         APP_SECRET: ${{ secrets.APP_SECRET }}
