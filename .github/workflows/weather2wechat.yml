@@ -5,7 +5,7 @@ name: 香港天文台天气预报
 
 on:
   schedule:
-    - cron : '00 01,04,10,13 * * *'
+    - cron : '30 00,03,09,12 * * *'
   workflow_dispatch:
 
 permissions:
