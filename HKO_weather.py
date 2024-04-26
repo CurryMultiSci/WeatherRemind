@@ -81,4 +81,4 @@ def weather_report():
     send_weather_text(access_token, weather,tomo_weather,warn)
 
 if __name__ == '__main__':
-    get_weather_warn()
+    weather_report()
