@@ -42,7 +42,7 @@ def get_weather_warn():
         for i in range(0,len_data):
             warn+=str(data[i]["contents"])+"\r\n"
     else:
-        warn="無"
+        warn="無\r\n"
     # print(warn)
     return warn
 
