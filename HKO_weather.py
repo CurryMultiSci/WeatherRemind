@@ -34,14 +34,16 @@ def get_tomorrow_weather():
 def get_weather_warn():
     url="https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=warningInfo&lang=tc"
     resp = requests.get(url)
-    data=resp.json()["details"]
-    len_data=len(data)
-    warn=""
-    if len_data==0:
-        warn="無"
-    else:
+    data=resp.json()
+    if data !={}:
+        data=resp.json()["details"]
+        len_data=len(data)
+        warn=""
         for i in range(0,len_data):
             warn+=str(data[i]["contents"])+"\r\n"
+    else:
+        warn="無"
+    # print(warn)
     return warn
 
 
@@ -79,4 +81,4 @@ def weather_report():
     send_weather_text(access_token, weather,tomo_weather,warn)
 
 if __name__ == '__main__':
-    weather_report()
+    get_weather_warn()
