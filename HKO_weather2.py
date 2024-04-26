@@ -38,7 +38,7 @@ def get_weather_warn():
     len_data=len(data)
     warn=""
     for i in range(0,len_data):
-        warn+=data[i]["updateTime"]+":"+str(data[i]["contents"])+"\r\n"
+        warn+=str(data[i]["contents"])+" "+data[i]["updateTime"]
     warn="無" if warn=="" else warn
     return warn
 
