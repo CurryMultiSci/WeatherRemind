@@ -37,9 +37,11 @@ def get_weather_warn():
     data=resp.json()["details"]
     len_data=len(data)
     warn=""
-    for i in range(0,len_data):
-        warn+=str(data[i]["contents"])+" "+data[i]["updateTime"]
-    warn="無" if warn=="" else warn
+    if len_data==0:
+        warn="無"
+    else:
+        for i in range(0,len_data):
+            warn+=str(data[i]["contents"])+" "+data[i]["updateTime"]+"\r\n"
     return warn
 
 
@@ -60,7 +62,7 @@ def send_weather_text(access_token, weather,tomo_weather,warn):
     body = {
         "touser": openId.strip(),
         "text":{           
-            "content":"本港地區天氣預報(數據源自：香港天文臺)\r\n"+"特別天氣提示："+warn+"\r\n"+weather[2]+"："+weather[3]+"\r\n明日天氣："+tomo_weather[1]+tomo_weather[2]+"溫度"+str(tomo_weather[4])+"°C ~ "+str(tomo_weather[3])+"°C。"+"相對濕度"+str(tomo_weather[6])+"% ~ "+str(tomo_weather[5])+"%。"+"\r\n未來天氣："+tomo_weather[0]+"\r\n熱帶氣旋："+weather[1]+"\r\n更新時間："+weather[4]
+            "content":"本港地區天氣預報(數據源自：香港天文臺)\r\n"+weather[2]+"："+weather[3]+"\r\n明日天氣："+tomo_weather[1]+tomo_weather[2]+"溫度"+str(tomo_weather[4])+"°C ~ "+str(tomo_weather[3])+"°C。"+"相對濕度"+str(tomo_weather[6])+"% ~ "+str(tomo_weather[5])+"%。"+"\r\n未來天氣："+tomo_weather[0]+"特別天氣提示："+warn+"\r\n"+"\r\n熱帶氣旋："+weather[1]+"\r\n更新時間："+weather[4]
         },     
         "msgtype":"text"
         }
