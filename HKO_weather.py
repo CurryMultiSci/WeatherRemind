@@ -61,7 +61,7 @@ def get_earthquake():
     resp = requests.get(url)
     data=resp.json()
     if data !={}:
-        earthquake=data["region"]+"(緯度"+str(data["lat"])+", 經度"+str(data["lon"])+")"+"\r\n芮氏地震規模:\r\n"+str(data["mag"])+"地震發生日期及時間:\r\n"+data["ptime"]+"更新時間:\r\n"+data["updateTime"]
+        earthquake=data["region"]+"(緯度"+str(data["lat"])+", 經度"+str(data["lon"])+")"+"\r\n芮氏地震規模:"+str(data["mag"])+"\r\n地震時間:\r\n"+data["ptime"]+"更新時間:\r\n"+data["updateTime"]
     else:
         earthquake="無\r\n"
     # print(warn)
