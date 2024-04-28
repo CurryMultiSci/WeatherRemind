@@ -46,6 +46,15 @@ def get_weather_warn():
     # print(warn)
     return warn
 
+def get_rainfall():
+    url="https://data.weather.gov.hk/weatherAPI/opendata/hourlyRainfall.php?lang=tc"
+    resp = requests.get(url)
+    data=resp.json()["hourlyRainfall"]
+    len_data=len(data)
+    for i in range(0,len_data):
+        if data[i]["automaticWeatherStation"]=="香港天文台":
+            rain=data[i]["value"]+" "+data[i]["unit"]
+    return rain
 
 def get_access_token():
     # 获取access token的url
@@ -56,7 +65,7 @@ def get_access_token():
     access_token = response.get('access_token')
     return access_token
 
-def send_weather_text(access_token, weather,tomo_weather,warn):
+def send_weather_text(access_token, weather,tomo_weather,warn,rain):
     import datetime
     today = datetime.date.today()
     today_str = today.strftime("%Y年%m月%d日")
@@ -64,7 +73,7 @@ def send_weather_text(access_token, weather,tomo_weather,warn):
     body = {
         "touser": openId.strip(),
         "text":{           
-            "content":"本港地區天氣預報(香港天文臺"+weather[4][11:16]+"更新)\r\n"+weather[2]+"：\r\n"+weather[3]+"\r\n明日天氣：\r\n"+tomo_weather[1]+tomo_weather[2]+"溫度"+str(tomo_weather[4])+"°C ~ "+str(tomo_weather[3])+"°C。"+"相對濕度"+str(tomo_weather[6])+"% ~ "+str(tomo_weather[5])+"%。"+"\r\n特別天氣提示：\r\n"+warn+"熱帶氣旋：\r\n"+weather[1]
+            "content":"本港地區天氣預報(香港天文臺"+weather[4][11:16]+"更新)\r\n"+weather[2]+"：\r\n"+weather[3]+"\r\n過去一小時雨量"+rain+"\r\n明日天氣：\r\n"+tomo_weather[1]+tomo_weather[2]+"溫度"+str(tomo_weather[4])+"°C ~ "+str(tomo_weather[3])+"°C。"+"相對濕度"+str(tomo_weather[6])+"% ~ "+str(tomo_weather[5])+"%。"+"\r\n特別天氣提示：\r\n"+warn+"熱帶氣旋：\r\n"+weather[1]
         },     
         "msgtype":"text"
         }
@@ -77,8 +86,9 @@ def weather_report():
     weather = get_weather()
     tomo_weather=get_tomorrow_weather()
     warn=get_weather_warn()
-    print(f"天气信息： {weather,tomo_weather,warn}")
-    send_weather_text(access_token, weather,tomo_weather,warn)
+    rain=get_rainfall()
+    print(f"天气信息： {weather,tomo_weather,warn,rain}")
+    send_weather_text(access_token, weather,tomo_weather,warn,rain)
 
 if __name__ == '__main__':
     weather_report()
