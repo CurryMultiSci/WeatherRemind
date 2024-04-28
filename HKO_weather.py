@@ -2,7 +2,6 @@ import requests
 import json
 import os
 import datetime
-import pytz
 
 appID = os.environ.get("APP_ID")
 appSecret = os.environ.get("APP_SECRET")
