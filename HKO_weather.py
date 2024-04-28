@@ -1,7 +1,8 @@
 import requests
 import json
 import os
-from datetime import datetime
+import datetime
+import pytz
 
 appID = os.environ.get("APP_ID")
 appSecret = os.environ.get("APP_SECRET")
@@ -62,12 +63,13 @@ def get_earthquake():
     resp = requests.get(url)
     data=resp.json()
     if data !={}:
-        ptime=datetime.strptime(data["ptime"], "%Y-%m-%dT%H:%M")
-        updatetime=datetime.strptime(data["updateTime"], "%Y-%m-%dT%H:%M")
-        earthquake=data["region"]+"(緯度"+str(data["lat"])+", 經度"+str(data["lon"])+")"+"\r\n芮氏地震規模:"+str(data["mag"])+"\r\n地震時間:\r\n"+ptime+"更新時間:\r\n"+updatetime
+        ptime = datetime.datetime.strptime(data["ptime"], "%Y-%m-%dT%H:%M:%S%z")
+        ptime_utc = ptime - ptime.utcoffset()
+        updatetime = datetime.datetime.strptime(data["updateTime"], "%Y-%m-%dT%H:%M:%S%z")
+        updatetime_utc = ptime - updatetime.utcoffset()
+        earthquake=data["region"]+"(緯度"+str(data["lat"])+", 經度"+str(data["lon"])+")"+"\r\n芮氏地震規模:"+str(data["mag"])+"\r\n地震時間:\r\n"+ptime_utc+"更新時間:\r\n"+updatetime_utc
     else:
         earthquake="無\r\n"
-    # print(warn)
     return earthquake
 
 def get_access_token():
