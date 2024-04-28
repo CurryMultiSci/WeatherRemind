@@ -84,7 +84,7 @@ def send_weather_text(access_token, weather,tomo_weather,warn,rain,earthquake):
     body = {
         "touser": openId.strip(),
         "text":{           
-            "content":"本港地區天氣預報(香港天文臺"+weather[4][11:16]+"更新)\r\n"+weather[2]+"：\r\n"+weather[3]+"\r\n過去一小時雨量"+rain+"\r\n明日天氣：\r\n"+tomo_weather[1]+tomo_weather[2]+"溫度"+str(tomo_weather[4])+"°C ~ "+str(tomo_weather[3])+"°C。"+"相對濕度"+str(tomo_weather[6])+"% ~ "+str(tomo_weather[5])+"%。"+"\r\n特別天氣提示：\r\n"+warn+"地震速報\r\n"+earthquake+"熱帶氣旋：\r\n"+weather[1]
+            "content":"本港地區天氣預報(香港天文臺"+weather[4][11:16]+"更新)\r\n"+weather[2]+"：\r\n"+weather[3]+"\r\n過去一小時雨量: "+rain+"\r\n明日天氣：\r\n"+tomo_weather[1]+tomo_weather[2]+"溫度"+str(tomo_weather[4])+"°C ~ "+str(tomo_weather[3])+"°C。"+"相對濕度"+str(tomo_weather[6])+"% ~ "+str(tomo_weather[5])+"%。"+"\r\n特別天氣提示：\r\n"+warn+"地震速報\r\n"+earthquake+"熱帶氣旋：\r\n"+weather[1]
         },     
         "msgtype":"text"
         }
