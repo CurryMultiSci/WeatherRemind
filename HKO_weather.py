@@ -63,11 +63,9 @@ def get_earthquake():
     resp = requests.get(url)
     data=resp.json()
     if data !={}:
-        ptime = datetime.datetime.strptime(data["ptime"], "%Y-%m-%dT%H:%M:%S%z")
-        ptime_utc = ptime - ptime.utcoffset()
-        updatetime = datetime.datetime.strptime(data["updateTime"], "%Y-%m-%dT%H:%M:%S%z")
-        updatetime_utc = ptime - updatetime.utcoffset()
-        earthquake=data["region"]+"(緯度"+str(data["lat"])+", 經度"+str(data["lon"])+")"+"\r\n芮氏地震規模:"+str(data["mag"])+"\r\n地震時間:\r\n"+ptime_utc+"更新時間:\r\n"+updatetime_utc
+        ptime = datetime.datetime.strptime(data["ptime"], "%Y-%m-%dT%H:%M:%S%z").strftime("%Y-%m-%d %H:%M:%S")
+        updatetime = datetime.datetime.strptime(data["updateTime"], "%Y-%m-%dT%H:%M:%S%z").strftime("%Y-%m-%d %H:%M:%S")
+        earthquake=data["region"]+"(緯度"+str(data["lat"])+", 經度"+str(data["lon"])+")"+"\r\n芮氏地震規模:"+str(data["mag"])+"\r\n地震時間: "+str(ptime)+"\r\n更新時間: "+str(updatetime)
     else:
         earthquake="無\r\n"
     return earthquake
