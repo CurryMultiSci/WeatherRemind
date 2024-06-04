@@ -31,3 +31,4 @@ jobs:
         python daily_sign.py
       env:
         JD_COOKIE: ${{ secrets.JD_COOKIE }}
+        JD_URL: ${{ secrets.JD_URL }}
