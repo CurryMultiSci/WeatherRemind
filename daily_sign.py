@@ -7,7 +7,7 @@ url = os.environ.get("JD_URL")
 headers = {"Connection": 'keep-alive',
            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
            "Cache-Control": 'no-cache',
-           "User-Agent": "okhttp/3.12.1;jdmall;android;version/10.3.4;build/92451;",
+           "User-Agent": "okhttp/3.12.1;jdapp;iPhone;version/12.4.3;appBuild/169159;",
            "accept": "*/*",
            "connection": "Keep-Alive",
            "Accept-Encoding": "gzip, deflate, br",
