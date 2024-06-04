@@ -2,8 +2,7 @@ import os
 import requests
 
 cookie = os.environ.get("JD_COOKIE")
-fID=os.environ.get("JD_fID")
-url = ("https://api.m.jd.com/client.action")
+url = os.environ.get("JD_URL")
 
 headers = {"Connection": 'keep-alive',
            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
@@ -12,8 +11,7 @@ headers = {"Connection": 'keep-alive',
            "accept": "*/*",
            "connection": "Keep-Alive",
            "Accept-Encoding": "gzip, deflate, br",
-           "Cookie": cookie,
-           "functionId":fID
+           "Cookie": cookie
            }
 
 response = requests.post(url=url, headers=headers)
